@@ -89,7 +89,3 @@ SET id_project = 1,
 	`name` = 'Documentacion',
 	description = 'Creacion de los documentos',
 	estimate_at = '03:00:00';
-
-/*SELECT * FROM employees;
-SELECT * FROM projects;
-SELECT * FROM tasks;*/
