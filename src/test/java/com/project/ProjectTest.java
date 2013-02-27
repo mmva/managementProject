@@ -12,7 +12,6 @@ import javax.persistence.Persistence;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import com.project.models.ActiveRecord;
 import java.util.ArrayList;
 import java.util.List;
 
