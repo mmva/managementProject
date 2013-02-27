@@ -1,14 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.project.entities;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,58 +16,62 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- *
- * @author Usuario
- */
 @Entity
 @Table(name = "tasks")
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
-    @Column(name = "name")
+    @Column(length=100)
     private String name;
+    
     @Basic(optional = false)
-    @Column(name = "description")
+    @Column(length=255)
     private String description;
+    
     @Basic(optional = false)
     @Column(name = "estimate_at")
     @Temporal(TemporalType.TIME)
     private Date estimateAt;
+    
+    @Basic(optional = true)
     @Column(name = "date_start")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateStart;
+    
+    @Basic(optional = true)
     @Column(name = "date_finish")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateFinish;
+        
     @Basic(optional = false)
     @Column(name = "date_last_update")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)    
     private Date dateLastUpdate;
+    
+    @Basic(optional = true)    
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "id_employee", referencedColumnName = "id")
-    @ManyToOne
-    private Employee idEmployee;
+    private Employee employee;
+        
+    @ManyToOne(fetch=FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_project", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Project idProject;
+    private Project project;
 
     public Task() {
     }
 
-    public Task(Integer id) {
-        this.id = id;
-    }
-
-    public Task(Integer id, String name, String description, Date estimateAt, Date dateLastUpdate) {
-        this.id = id;
+    public Task(String name, String description, Time estimateAt, Date dateStart, Date dateFinish, Date dateLastUpdate) {
         this.name = name;
         this.description = description;
         this.estimateAt = estimateAt;
+        this.dateStart = dateStart;
+        this.dateFinish = dateFinish;
         this.dateLastUpdate = dateLastUpdate;
     }
 
@@ -129,37 +131,40 @@ public class Task implements Serializable {
         this.dateLastUpdate = dateLastUpdate;
     }
 
-    public Employee getIdEmployee() {
-        return idEmployee;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setIdEmployee(Employee idEmployee) {
-        this.idEmployee = idEmployee;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
-    public Project getIdProject() {
-        return idProject;
+    public Project getProject() {
+        return project;
     }
 
-    public void setIdProject(Project idProject) {
-        this.idProject = idProject;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
+    // Dos objetos iguales si coincide su identificador unico
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 3;
+        hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Task)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Task other = (Task) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Task other = (Task) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -167,7 +172,6 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return "com.project.entities.Tasks[ id=" + id + " ]";
-    }
-    
+        return "Task{" + "id=" + id + ", name=" + name + ", description=" + description + ", estimateAt=" + estimateAt + ", dateStart=" + dateStart + ", dateFinish=" + dateFinish + ", dateLastUpdate=" + dateLastUpdate + ", project=" + project + '}';
+    }    
 }
