@@ -179,8 +179,8 @@ public class Task extends ActiveRecord<Task> implements Serializable {
     }  
     
     // Implementacion del Active Record
-    public Project findById(EntityManager em, int id){
-         Project object =  em.find(Project.class, id);
+    public static Task findById(EntityManager em, int id){
+         Task object = em.find(Task.class, id);
          
          return object;
     } 

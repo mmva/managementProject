@@ -38,10 +38,11 @@ public class Project extends ActiveRecord<Project> implements Serializable {
     @Column(length=255)
     private String description;
     
-    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY/*, cascade=CascadeType.ALL*/)
     // @OneToMany(fetch=FetchType.LAZY)
     @JoinColumn(name="id_project", referencedColumnName="id", nullable=false)    
     private List<Task> tasksList;
+    
 
     public Project() {
     }
@@ -140,5 +141,16 @@ public class Project extends ActiveRecord<Project> implements Serializable {
         System.out.println("Number of projects: " + count);
         
         return count;        
-    }       
+    }   
+    
+    public static List<Employee> findEmployeesProject(EntityManager em, int id){
+        String eql = "SELECT e FROM Employee e, Project p, Task t "
+           + "WHERE t.employee.id=e.id AND t.project.id=p.id AND p.id = :idProject "
+           + "ORDER BY e.id"; 
+
+        TypedQuery<Employee> query = em.createQuery(eql, Employee.class);
+        query.setParameter("idProject", id);
+        
+        return query.getResultList();        
+    }     
 }
