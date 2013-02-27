@@ -3,16 +3,20 @@ CREATE DATABASE management_projects;
 USE management_projects;
 
 CREATE TABLE employees (
-	id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
 	firt_name VARCHAR(100) NOT NULL,
 	last_name VARCHAR(100) NOT NULL,
 	last_name2 VARCHAR(100),
 	nif CHAR(10) NOT NULL,
 	email VARCHAR(100) NOT NULL,
+	`password` VARCHAR(20) NOT NULL,
 	`profile` ENUM('PROGRAMADOR', 'ANALISTA', 'JEFE_PROYECTO', 'ADMINISTRADOR' ), 
 	active ENUM('ACTIVO','INACTIVO'),
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	UNIQUE KEY email_uk(email)
 );
+
+
 
 CREATE TABLE projects (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -22,9 +26,9 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE tasks (
-	id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
 	id_project INT UNSIGNED NOT NULL,
-	id_employee INT UNSIGNED, 
+	id_employee BIGINT UNSIGNED, 
 	`name` VARCHAR(100) NOT NULL,
 	description VARCHAR(255) NOT NULL,
 	estimate_at TIME NOT NULL,
@@ -48,6 +52,7 @@ SET firt_name = 'Alberto',
 	last_name2 = 'Galan',
 	nif = '12345678-Y',
 	email = 'alberto@empresa.es',
+	`password` = "asvd",
 	`profile` = 'PROGRAMADOR',
 	active = 'ACTIVO';
 
@@ -57,6 +62,7 @@ SET firt_name = 'Ruben',
 	last_name2 = 'Sevilla',
 	nif = '87654321-A',
 	email = 'ruben@empresa.es',
+	`password` = "sadas",
 	`profile` = 'ANALISTA',
 	active = 'ACTIVO';
 
@@ -66,6 +72,7 @@ SET firt_name = 'David',
 	last_name2 = 'Rodriguez',
 	nif = '12343214-W',
 	email = 'david@empresa.es',
+	`password` = "aaa",
 	`profile` = 'JEFE_PROYECTO',
 	active = 'ACTIVO';
 
@@ -89,3 +96,7 @@ SET id_project = 1,
 	`name` = 'Documentacion',
 	description = 'Creacion de los documentos',
 	estimate_at = '03:00:00';
+
+/*SELECT * FROM employees;
+SELECT * FROM projects;
+SELECT * FROM tasks;*/

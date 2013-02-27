@@ -44,15 +44,15 @@ public class EmployeeTest {
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory( "managementProjectPU" );
         em = emf.createEntityManager();
-        employee1 = new Employee( "Felix", "Garcia", "Tapia", "12345678-F", "felix@empresa.es", "PROGRAMADOR", "INACTIVO" );
+        employee1 = new Employee( "Felix", "Garcia", "Tapia", "12345678-F", "felix@empresa.es", "abc", "PROGRAMADOR", "INACTIVO" );
         employee1.setId( 1L );
-        employee2 = new Employee( "David", "Fernandez", "Galan", "87654321-A", "david@empresa.es", "ANALISTA", "ACTIVO" );
+        employee2 = new Employee( "David", "Fernandez", "Galan", "87654321-A", "david@empresa.es", "def", "ANALISTA", "ACTIVO" );
         employee2.setId( 2L );
-        employee3 = new Employee( "Ruben", "Gutierrez", "Perez", "12348765-C", "ruben@empresa.es", "JEFE_PROYECTO", "INACTIVO" );
+        employee3 = new Employee( "Ruben", "Gutierrez", "Perez", "12348765-C", "ruben@empresa.es", "sds", "JEFE_PROYECTO", "INACTIVO" );
         employee3.setId( 3L );
-        employee4 = new Employee( "Marta", "Ecija", "Galan", "11114444-H", "marta@empresa.es", "ANALISTA", "ACTIVO" );
+        employee4 = new Employee( "Marta", "Ecija", "Galan", "11114444-H", "marta@empresa.es", "dsd", "ANALISTA", "ACTIVO" );
         employee4.setId( 4L );
-        employee5 = new Employee( "Isabel", "Lopez", "Galan", "22226666-P", "isabel@empresa.es", "ADMINISTRADOR", "INACTIVO" );
+        employee5 = new Employee( "Isabel", "Lopez", "Galan", "22226666-P", "isabel@empresa.es", "sdasd", "ADMINISTRADOR", "INACTIVO" );
         employee5.setId( 5L );
     }
     

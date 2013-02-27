@@ -37,8 +37,11 @@ public class Employee implements Serializable {
     @Column(name = "nif", length = 10 )
     private String nif;
     
-    @Column(name = "email", length = 100 )
+    @Column(name = "email", length = 100, unique = true )
     private String email;
+    
+    @Column(length = 20 )
+    private String password;
     
     @Column(name = "profile")
     private String profile;
@@ -47,7 +50,7 @@ public class Employee implements Serializable {
     private String active;
     
     @OneToMany( /*cascade=CascadeType.ALL,*/ fetch = FetchType.LAZY )
-    @JoinColumn( name = "id", referencedColumnName = "id", nullable = false )
+    @JoinColumn( name = "id_project", referencedColumnName = "id", nullable = false )
     private List<Task> tasks;
 
     // constructors
@@ -55,12 +58,13 @@ public class Employee implements Serializable {
     public Employee() {
     }
  
-    public Employee(String firtName, String lastName, String lastName2, String nif, String email, String profile, String active ) {
+    public Employee(String firtName, String lastName, String lastName2, String nif, String email, String password, String profile, String active ) {
         this.firtName = firtName;
         this.lastName = lastName;
         this.lastName2 = lastName2;
         this.nif = nif;
         this.email = email;
+        this.password = password;
         this.profile = profile;
         this.active = active;
     }
