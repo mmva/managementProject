@@ -5,6 +5,7 @@
     <!--<class>com.project.entities.Employee</class>-->
     <class>com.project.entities.Project</class>
     <class>com.project.entities.Task</class>
+    <class>com.project.entities.Employee</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/management_projects?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value="password"/>
