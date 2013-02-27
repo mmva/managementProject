@@ -52,7 +52,7 @@ public class EmployeeTest {
         employee3.setId( 3L );
         employee4 = new Employee( "Marta", "Ecija", "Galan", "11114444-H", "marta@empresa.es", "dsd", "ANALISTA", "ACTIVO" );
         employee4.setId( 4L );
-        employee5 = new Employee( "Isabel", "Lopez", "Galan", "22226666-P", "isabel@empresa.es", "sdasd", "ADMINISTRADOR", "INACTIVO" );
+        employee5 = new Employee( "Alicia", "Ecija", "Garcia", "22226666-P", "isabel@empresa.es", "sdasd", "ADMINISTRADOR", "INACTIVO" );
         employee5.setId( 5L );
     }
     
@@ -90,42 +90,98 @@ public class EmployeeTest {
         Assert.assertEquals( 5, count );
     }
     
-    /*@Test
+    @Test
     public void test_findByPage() throws SQLException {
-        book1.create( em );
-        book2.create( em );
-        book3.create( em );
-        List<BookBBDD> expected = new ArrayList<BookBBDD>();
-        expected.add( book1 );
-        expected.add( book2 );
+        employee1.create( em );
+        employee2.create( em );
+        employee3.create( em );
+        employee4.create( em );
+        employee5.create( em );
+        List<Employee> expected = new ArrayList<Employee>();
+        expected.add( employee3 );
+        expected.add( employee4 );
         
-        List<BookBBDD> users = BookBBDD.findByPage( em, 1, 2 );
-        Assert.assertEquals( expected, users );
+        List<Employee> employee = Employee.findByPage( em, 2, 2 );
+        Assert.assertEquals( expected, employee );
     }
          
     @Test
     public void test_update() throws SQLException {
-        book1.create( em );
-        book2.create( em );
-        book3.create( em );
+        employee1.create( em );
+        employee2.create( em );
+        employee3.create( em );
+        employee4.create( em );
+        employee5.create( em );
+        employee3.setPassword( "hola" );
+        employee3.update( em );
         
-        book1.setTitle( "Desconocido" );
-        book1.update( em );
-        
-        BookBBDD book = BookBBDD.findById( em, book1.getId() );
-        Assert.assertEquals( book1.getTitle(), book.getTitle() );
+        Employee employee = Employee.findById( em, employee3.getId() );
+        Assert.assertEquals( employee3.getPassword(), employee.getPassword() );
     }
     
     @Test
     public void test_delete() throws SQLException {
-        book1.create( em );
-        book2.create( em );
-        book3.create( em );
-       
-        book1.delete( em );
+        employee1.create( em );
+        employee2.create( em );
+        employee3.create( em );
+        employee4.create( em );
+        employee5.create( em );
         
-        BookBBDD book = BookBBDD.findById( em, book1.getId() );
+        employee3.delete(em);
         
-        Assert.assertNull( book );
-    }   */ 
+        Employee employee = Employee.findById( em, employee3.getId() );       
+        Assert.assertNull( employee );
+    }  
+    
+    @Test 
+    public void test_findByLastName() throws SQLException {
+        employee1.create( em );
+        employee2.create( em );
+        employee3.create( em );
+        employee4.create( em );
+        employee5.create( em );
+        
+        List<Employee> expected = new ArrayList<Employee>();
+        expected.add( employee5 );
+        expected.add( employee4 );
+        
+        List<Employee> employees = Employee.findByLastName( em, employee4.getLastName() );
+        
+        Assert.assertEquals( expected, employees );
+    }
+    
+    @Test 
+    public void test_findByProfile() throws SQLException {
+        employee1.create( em );
+        employee2.create( em );
+        employee3.create( em );
+        employee4.create( em );
+        employee5.create( em ); 
+        
+        List<Employee> expected = new ArrayList<Employee>();
+        expected.add( employee4 );
+        expected.add( employee2 );
+        
+        List<Employee> employees = Employee.findByProfile( em, employee2.getProfile() );
+        
+        Assert.assertEquals( expected, employees );
+    }
+    
+    @Test 
+    public void test_findByState() throws SQLException {
+        employee1.create( em );
+        employee2.create( em );
+        employee3.create( em );
+        employee4.create( em );
+        employee5.create( em ); 
+        
+        List<Employee> expected = new ArrayList<Employee>();
+        expected.add( employee5 );
+        expected.add( employee1 );
+        expected.add( employee3 );
+        
+        List<Employee> employees = Employee.findByState( em, employee1.getActive() );
+        
+        Assert.assertEquals( expected, employees );
+    }
 }

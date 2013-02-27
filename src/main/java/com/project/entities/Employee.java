@@ -26,7 +26,7 @@ public class Employee implements Serializable {
     private long id;
     
     @Column(name = "firt_name", length = 100 )
-    private String firtName;
+    private String firstName;
     
     @Column(name = "last_name", length = 100 )
     private String lastName;
@@ -58,8 +58,8 @@ public class Employee implements Serializable {
     public Employee() {
     }
  
-    public Employee(String firtName, String lastName, String lastName2, String nif, String email, String password, String profile, String active ) {
-        this.firtName = firtName;
+    public Employee(String firstName, String lastName, String lastName2, String nif, String email, String password, String profile, String active ) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.lastName2 = lastName2;
         this.nif = nif;
@@ -80,11 +80,11 @@ public class Employee implements Serializable {
     }
 
     public String getFirtName() {
-        return firtName;
+        return firstName;
     }
 
     public void setFirtName(String firtName) {
-        this.firtName = firtName;
+        this.firstName = firtName;
     }
 
     public String getLastName() {
@@ -113,6 +113,14 @@ public class Employee implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setEmail(String email) {
@@ -169,8 +177,8 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        return "Employee{" + "id=" + id + ", firtName=" + firtName + ", lastName=" + lastName + ", lastName2=" + lastName2 + ", nif=" + nif + ", email=" + email + ", profile=" + profile + ", active=" + active + '}';
-    } 
+        return "Employee{" + "id=" + id + ", firtName=" + firstName + ", lastName=" + lastName + ", lastName2=" + lastName2 + ", nif=" + nif + ", email=" + email + ", password=" + password + ", profile=" + profile + ", active=" + active + '}';
+    }
     
     // ACTIVE RECORD
     public static Employee findById( EntityManager em, long id ) {
@@ -195,21 +203,21 @@ public class Employee implements Serializable {
     }
     
     public static List<Employee> findByLastName(EntityManager em, String lastName) {
-        String sql = "SELECT x FROM Employee x WHERE x.lastName LIKE '%' :lastName '%'";
+        String sql = "SELECT x FROM Employee x WHERE x.lastName LIKE :lastName ORDER BY x.firstName";
         TypedQuery<Employee> query = em.createQuery(sql, Employee.class);
         query.setParameter( "lastName", lastName );
         return query.getResultList();
     }
     
     public static List<Employee> findByProfile(EntityManager em, String profile) {
-        String sql = "SELECT x FROM Employee x WHERE x.profile = :profile";
+        String sql = "SELECT x FROM Employee x WHERE x.profile = :profile ORDER BY x.lastName, x.firstName";
         TypedQuery<Employee> query = em.createQuery(sql, Employee.class);
         query.setParameter( "profile", profile );
         return query.getResultList();
     }
     
     public static List<Employee> findByState(EntityManager em, String state) {
-        String sql = "SELECT x FROM Employee x WHERE x.active = :state";
+        String sql = "SELECT x FROM Employee x WHERE x.active = :state ORDER BY x.lastName, x.firstName";
         TypedQuery<Employee> query = em.createQuery(sql, Employee.class);
         query.setParameter( "state", state );
         return query.getResultList();
