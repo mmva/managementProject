@@ -191,7 +191,7 @@ public class Employee implements Serializable {
     }
     
     public static List<Employee> findByLastName(EntityManager em, String lastName) {
-        String sql = "SELECT x FROM Employee x WHERE x.lastName = :lastName";
+        String sql = "SELECT x FROM Employee x WHERE x.lastName LIKE '%' :lastName '%'";
         TypedQuery<Employee> query = em.createQuery(sql, Employee.class);
         query.setParameter( "lastName", lastName );
         return query.getResultList();
