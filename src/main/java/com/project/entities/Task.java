@@ -1,11 +1,14 @@
 package com.project.entities;
 
+import com.project.models.ActiveRecord;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,10 +18,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 
 @Entity
 @Table(name = "tasks")
-public class Task implements Serializable {
+public class Task extends ActiveRecord<Task> implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -53,8 +57,7 @@ public class Task implements Serializable {
     @Column(name = "date_last_update")
     @Temporal(TemporalType.TIMESTAMP)    
     private Date dateLastUpdate;
-    
-    @Basic(optional = true)    
+        
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "id_employee", referencedColumnName = "id")
     private Employee employee;
@@ -173,5 +176,34 @@ public class Task implements Serializable {
     @Override
     public String toString() {
         return "Task{" + "id=" + id + ", name=" + name + ", description=" + description + ", estimateAt=" + estimateAt + ", dateStart=" + dateStart + ", dateFinish=" + dateFinish + ", dateLastUpdate=" + dateLastUpdate + ", project=" + project + '}';
-    }    
+    }  
+    
+    // Implementacion del Active Record
+    public Project findById(EntityManager em, int id){
+         Project object =  em.find(Project.class, id);
+         
+         return object;
+    } 
+    
+    public static List<Task> findByPage(EntityManager em, int page, int pagePerPage){
+        String eql = "SELECT x FROM Task x ORDER BY x.id";
+        TypedQuery<Task> query = em.createQuery(eql, Task.class);
+        int limit1 = pagePerPage*(page-1);
+        
+        query.setFirstResult(limit1);
+        query.setMaxResults(pagePerPage);
+        List<Task> tasks = query.getResultList();        
+        
+        return tasks;
+    }
+    
+    public static long count(EntityManager em){
+        String eql = "SELECT count(x) FROM Task x"; // Siempre indicar alias
+        TypedQuery<Number> query = em.createQuery(eql, Number.class);
+        long count = query.getSingleResult().longValue(); 
+        
+        System.out.println("Number of taks: " + count);
+        
+        return count;        
+    }       
 }

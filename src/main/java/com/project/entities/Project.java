@@ -1,12 +1,13 @@
 package com.project.entities;
 
+import com.project.models.ActiveRecord;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,11 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "projects")
-public class Project implements Serializable {
+public class Project extends ActiveRecord<Project> implements Serializable {
+    @Transient
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -45,11 +49,6 @@ public class Project implements Serializable {
     public Project(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public Project(Integer id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Integer getId() {
@@ -112,5 +111,34 @@ public class Project implements Serializable {
     @Override
     public String toString() {
         return "Project{" + "id=" + id + ", name=" + name + ", description=" + description + '}';
-    }    
+    }   
+    
+    // Implementacion del Active Record    
+    public static Project findById(EntityManager em, int id){
+         Project object =  em.find(Project.class, id);
+         
+         return object;
+    }     
+    
+    public static List<Project> findByPage(EntityManager em, int page, int pagePerPage){
+        String eql = "SELECT x FROM Project x ORDER BY x.id";
+        TypedQuery<Project> query = em.createQuery(eql, Project.class);
+        int limit1 = pagePerPage*(page-1);
+        
+        query.setFirstResult(limit1);
+        query.setMaxResults(pagePerPage);
+        List<Project> projects = query.getResultList();        
+        
+        return projects;
+    }
+    
+    public static long count(EntityManager em){
+        String eql = "SELECT count(x) FROM Project x"; // Siempre indicar alias
+        TypedQuery<Number> query = em.createQuery(eql, Number.class);
+        long count = query.getSingleResult().longValue(); 
+        
+        System.out.println("Number of projects: " + count);
+        
+        return count;        
+    }       
 }
